@@ -22,6 +22,12 @@ upTotal ← ⊑+˝'0'-˜(1⊑˘>upList)
 •Show forwardTotal × (downTotal - upTotal)
 
 #cannot split and group the list, need to process in order
+# using example
+#           (5)    (5)   (8)   (3) (8)   (2)
+#         forward down forward up down forward
+# horizon    5     5     13    13  13    15
+# aim        0     5     5     2   10    10      
+# depth      0     0     40    40  40    60
 #solution 2
 
 horizontalDiff ← ({"forward"≡⊑𝕩}◶0‿{⊑'0'-˜1⊑𝕩})¨input

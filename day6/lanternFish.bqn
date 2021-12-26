@@ -19,11 +19,23 @@ FCycle ← {
  (0⊸<)◶newArray‿{∾⟜8⍟𝕩 newArray} ≠/encoder 
 }
 #solution 1
-#•Show ≠FCycle⍟80 initState
+#•Show FCycle⍟16 initState
+#•Show FCycle⍟21 initState
+#•Show FCycle⍟32 initState
+#•Show FCycle⍟40 initState
 
 #solution 2
 # stack overflow
-# can i split?
-first100 ← FCycle⍟100 initState
-second100 ← FCycle⍟100 first100
-•Show ≠second100
+
+# 0 - 8: 9 days array
+#https://todd.ginsberg.com/post/advent-of-code/2021/day6/ 
+cycleArray ← 9⥊0
+{ cycleArray ↩(1⊸+)⌾(𝕩⊸⊑) cycleArray }¨initState
+
+FCycle2 ← {
+  dayAfter ← 1⌽𝕩
+  {(⊑⌽dayAfter)⊸+}⌾ (6⊸⊑) dayAfter
+}
+
+•Show +´FCycle2⍟256 cycleArray
+

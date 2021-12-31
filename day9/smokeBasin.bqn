@@ -1,4 +1,4 @@
-input ← •file.Lines "inputTest"
+input ← •file.Lines "input"
 
 # part 1
 input ↩ '0' -˜ >input
@@ -26,48 +26,26 @@ allLowPoints ← ∾lowPointsMask (/¨○<˘) input
 +´1+((0⊸<≠)¨/⊢) allLowPoints
 
 # part 2
-# first iter
-borderOf9 ← ¯1×input = 9
-# append top, left walls of '9' borders 
-#•Show borderOf9 ↩ {¯1 ∾˘ 𝕩} ⌾⍉ ¯1 ∾˘ borderOf9
-#
-#•Show first2rows ← 0‿1⊏borderOf9
+coordsMask ← ↕≢lowPointsMask
 
-globalCounter ← ¯1
+# x-y coord of all lowest points
+•Show lowPointCoords ← ∾lowPointsMask (/¨○<˘) coordsMask
 
-•Show a ← ⥊˘⊏2‿2↕ first2rows
+#withBorders ← {¯1∾˘𝕩∾˘¯1}⌾⍉ ¯1∾˘ (¯1×input=9) ∾˘¯1
+•Show hr‿wr ← 1-˜≢input
+•Show blockedCoords ← ∾(<˘input=9)/¨(<˘↕≢input)
 
-•Show firstPassRow ← {
-  up‿left‿self←1↓𝕩
+FCount ← {
+  # base conditions: if current cell x or y < 0 | x or y > range 
+  # or coord already blocked/traversed
+  # else, add 1 to counter
+  # pass all up, down, left, right coords and counter recursively 
+    y‿x ← 𝕩 
+   {(∨´y‿x < 0)∨(y > hr)∨(x > wr)∨(⊑⟨y‿x⟩∊blockedCoords) ? 0 ; 
+    blockedCoords ∾↩ ⟨y‿x⟩ ⋄ 
+    1 + (FCount ⟨y,x-1⟩) + (FCount ⟨y,x+1⟩) + (FCount ⟨y-1,x⟩) + (FCount ⟨y+1,x⟩)}
+}
 
-  # 3 scenarios:
-  # if self ≢ ¯1, then return ¯1 (below 2 scn, assum self ≥ 0)
-  # if up‿left ≡ ¯1 then return globalCounter+↩1 (new area)
-  # if up OR left ≥ 0 then return the segment ≥ 0 (existing area)?? Another pass
-  {
-    self≡¯1?¯1;
-      up‿left ≡ ¯1‿¯1?globalCounter +↩ 1; 
-        globalCounter
-  }
-}˘ a
+×´3↑∨FCount¨lowPointCoords
 
-#2nd iter
-borderOf9 ↩ (¯1∾firstPassRow)⌾(1⊸⊏) borderOf9
 
-•Show next2rows ← 1‿2⊏borderOf9
-
-•Show b ← ⥊˘⊏2‿2↕ next2rows
-
-•Show {
-  up‿left‿self←1↓𝕩
-
-  # 3 scenarios:
-  # if self ≢ ¯1, then return ¯1 (below 2 scn, assum self ≥ 0)
-  # if up‿left ≡ ¯1 then return globalCounter+↩1 (new area)
-  # if up OR left ≥ 0 then return the segment ≥ 0 (existing area)?? Another pass
-  {
-    self≡¯1?¯1;
-      up‿left ≡ ¯1‿¯1?globalCounter +↩ 1; 
-       ⊑(up‿left≥0)/up‿left  ## problem.. how to get the prevoius LEFT value?
-  }
-}˘b 

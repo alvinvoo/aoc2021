@@ -1,43 +1,40 @@
-input ← •file.Lines "inputTest"
+input ← •file.Lines "input"
 
 FSplitString ← ((⊢-˜¬×+`)∘=⊔⊢)
 FStringToInt ← +´((⌽10⋆↕∘≠)×-⟜'0')
 
-input ↩ FStringToInt⚇¯2 input
+input ↩ >FStringToInt⚇¯2 input
 len ← ≠input
+fullCoords ← ∾⌜˜↕len
+allPD ← 1‿1‿1‿1‿0‿1‿1‿1‿1/∾<˘≍⌜˜¯1‿0‿1
+allP ← {(((∧´¯1⊸<)∧(∧´len⊸>))¨/⊢) allPD+<𝕩}¨fullCoords
 
-fullCoords ← <˘∾⌜˜↕len
+flashArr ← 0
 
+# part 1
 Fn ← {
-# 1. add 1
-•Show iterOne←1+𝕩
+  # increase by 1
+  iter ← 1+𝕩
 
-# stabilization steps
-# 2. get coords which are > 9
-# *** there might no > 9 coords, so here could be ⟨⟩
-# in that case, just return iterOne
-•Show moreThan9Coords ← ∾(9<iterOne)/¨fullCoords
+  # for each coords starting from 0‿0, traverse the adjacent neighbors and look for value > 9
+  # but need to maintain previous 0
+  Fs ← {
+    zeroMask ← ¬0=𝕩
+    incrdMask ← +´¨9<allP⊑𝕩
+    aftInc ← 𝕩+zeroMask×incrdMask
 
-{0<≠moreThan9Coords ? 
+    o←(¬9<𝕩)×aftInc
+    # synchronization step: need to keep iterating
+    # as long as there are cells(>9)
+    {∨´⥊9<𝕩}◶⊢‿𝕊 o
+  }
 
-    # all possible positions (excluding out-of-bounds)
-    # in-bounds x > ¯1 ∧ y < len 
-    allP ← ∧∾{
-      a ← (𝕩⊸+)¨1‿1‿1‿1‿0‿1‿1‿1‿1/∾<˘≍⌜˜¯1‿0‿1
-      (((∧´¯1⊸<)∧(∧´len⊸>))¨/⊢) a
-    }¨moreThan9Coords
-    
-# Problem: allCounts doesnt have positional info
-    •Show allCounts ← ≠¨(⊐⊔⊢) allP
-    #•Show (⊑⍷)¨(⊐⊔⊢) allP
-    
-    •Show finalCounts ← len‿len⥊allCounts×((∾fullCoords)∊allP)  # here fail
-    f ← finalCounts + >iterOne  
-    
-    # 3. set all > 9 to 0
-    9⊸>⊸× f ; iterOne}
+  final ← Fs iter
+  flashArr +↩ +´⥊0=final
+  final
 }
 
-•Show Fn⍟2 input
-
+Fn⍟100 input
+•Show flashArr
+                      
 

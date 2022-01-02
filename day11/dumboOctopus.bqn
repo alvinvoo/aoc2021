@@ -34,7 +34,35 @@ Fn ← {
   final
 }
 
-Fn⍟100 input
-•Show flashArr
-                      
+#Fn⍟100 input
+#•Show flashArr
+
+counter ← 0
+# part 2
+Fn2 ← {
+  # increase by 1
+  iter ← 1+𝕩
+
+  # for each coords starting from 0‿0, traverse the adjacent neighbors and look for value > 9
+  # but need to maintain previous 0
+  Fs ← {
+    zeroMask ← ¬0=𝕩
+    incrdMask ← +´¨9<allP⊑𝕩
+    aftInc ← 𝕩+zeroMask×incrdMask
+
+    o←(¬9<𝕩)×aftInc
+    # synchronization step: need to keep iterating
+    # as long as there are cells(>9)
+    {∨´⥊9<𝕩}◶⊢‿𝕊 o
+  }
+
+  counter +↩1
+
+  {100=+´⥊0=𝕩}◶𝕊‿⊢ Fs iter 
+}
+
+Fn2 input
+•Show counter
+
+
 

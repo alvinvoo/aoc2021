@@ -8,7 +8,7 @@ input↩>{𝕩-'0'}¨input
 FindAdjN ← {
   y‿x←𝕩
   size←𝕨
-  p←⟨(y+1)‿x,y‿(x+1),(y-1)‿x,y‿(x-1)⟩
+  p←⟨(y+1)‿x,y‿(x+1)⟩
   c←{y‿x←𝕩⋄(y≥0)∧(x≥0)∧(y<size)∧(x<size)}¨p
   c/p
 }
@@ -76,14 +76,15 @@ Dijkstra ← {
 }
 
 # part 1
-d ← Dijkstra input
-
-•Show d.cost
+#d ← Dijkstra input
+#
+#•Show d.cost
 
 # part 2
+# doesnt work; run forever
 incrdMap ← +⌜˜↕5
-p2Input←(9⊸<◶⊢‿(-⟜9))¨ ∾input⊸+¨incrdMap
+•Show ≢p2Input←(9⊸<◶⊢‿(-⟜9))¨ ∾input⊸+¨incrdMap
 
-d2 ← Dijkstra p2Input
-
-•Show d2.cost
+#d2 ← Dijkstra p2Input
+#
+#•Show d2.cost

@@ -1,5 +1,5 @@
 
-input ⇐ •file.Lines "inputTest"
+input ⇐ •file.Lines "input"
 
 input↩>{𝕩-'0'}¨input
 
@@ -15,12 +15,14 @@ FindAdjN ← {
 
 While ← {𝕩{𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}𝕨@}´
 FSortDistList ← (⍋1⊸⊏˘∘>)⊸⊏
-size ← ≠input
-keys ← ⥊↕size‿size
 
 Dijkstra ← {
-  start ← 𝕨
-  end ← 𝕩
+  input ← 𝕩
+  size ← ≠input
+  keys ← ⥊↕size‿size
+
+  start ← 0‿0
+  end ← ¯1⊑keys
 
   # Priority node queue
   arr ← ∞⥊˜≠keys
@@ -64,19 +66,24 @@ Dijkstra ← {
     }
   }
 
-  cost ⇐ ⊑(end<⊸(≡¨)keys)/distList
+  #cost ⇐ ⊑(end<⊸(≡¨)keys)/distList
+  # make it easier for this qns
+  cost ⇐ ¯1⊑distList
   
-  •Show pQ
-
   #path ⇐ ⟨end⟩ {
   #  𝕩≢0 ? n←⊑(𝕩<⊸(≡¨)keys)/prevList ⋄ (n<⊸∾𝕨)𝕊n ; 1↓𝕨
   #} end
 }
 
 # part 1
-d ← 0‿0 Dijkstra 9‿9
+d ← Dijkstra input
 
 •Show d.cost
 
+# part 2
+incrdMap ← +⌜˜↕5
+p2Input←(9⊸<◶⊢‿(-⟜9))¨ ∾input⊸+¨incrdMap
 
+d2 ← Dijkstra p2Input
 
+•Show d2.cost

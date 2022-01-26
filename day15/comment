@@ -1,0 +1,80 @@
+
+  •Show "c"
+# seems like a diagonal 2by2 scanning down function
+# quite consistent but 4 middle parts seems to be getting 2 extra elems (dunno if this is intentional)
+⟨ 11 20 0 2 ⟩
+⟨ 21 30 12 1 10 3 ⟩
+⟨ 31 40 22 13 11 20 2 4 ⟩
+⟨ 41 50 32 23 14 21 30 12 3 5 ⟩
+⟨ 51 60 42 33 24 15 31 40 22 13 4 6 ⟩
+⟨ 61 70 52 43 34 25 16 41 50 32 23 14 5 7 ⟩
+⟨ 71 80 62 53 44 35 26 17 51 60 42 33 24 15 6 8 ⟩
+⟨ 81 90 72 63 54 45 36 27 18 61 70 52 43 34 25 16 7 9 ⟩
+⟨ 91 82 73 64 55 46 37 28 26 19 71 80 62 53 44 35 17 8 6 15 ⟩<--ex 6 15
+⟨ 92 83 74 65 56 47 38 29 27 81 72 63 54 45 36 18 9 7 90 16 ⟩<-- 7 16
+⟨ 93 84 75 66 57 48 39 28 82 73 64 55 46 37 19 8 91 17 ⟩ <-- 8 17
+⟨ 94 85 76 67 58 49 29 83 74 65 56 47 38 9 92 18 ⟩ <-- 9 18
+⟨ 95 86 77 68 59 84 75 66 57 48 39 93 ⟩
+⟨ 96 87 78 69 49 85 76 67 58 29 94 38 ⟩
+⟨ 97 88 79 86 77 68 59 95 ⟩
+⟨ 98 89 87 78 69 96 ⟩
+⟨ 99 88 79 97 ⟩
+⟨ 89 98 ⟩
+⟨⟩
+
+Inside step
+The shifting of 10‿10⥊↕100 in 4 directions was to create the 4 positions (or dirs) that a position can move
+
+For e.g.
+1st step
+"c"
+⟨ 1 10 ⟩
+"neighbors"
+⟨ ⟨ 11 20 ⟩ ⟨ 100 0 ⟩ ⟨ 2 11 ⟩ ⟨ 0 100 ⟩ ⟩
+
+with 100 as out of bound
+the 4 moves for 1 was 11 (down), 100 (up - oob), 2 (right) and 0 (left)
+4 moves for 10 was similar
+
+next, was to create the candidate distance
+"my dist"
+⟨ 1 1 ⟩
+"cand distance" - my dist + neighbor dist
+⟨ 1 1 ⟩
+
+and update the distance list only if larger
+m ← n<p
+sc (m/n)⌾((m/c)⊸⊏)↩ # update distance list
+
+by observation, the next `c` is simply a unique combined list of the neighbors, excluding the oob value
+"next c"
+c ↩ ⍷ ∾(m ∧ (≠ll)≠⊢)⊸/¨ nd
+⟨ 11 20 0 2 ⟩
+
+`m` is the selection list, if there's already a smaller dist before, there's no need to iterate this neighbor again 
+   ⍷ ∾(1‿0 ∧ 100≠⊢)⊸/¨nd
+⟨ 11 2 0 ⟩
+   ⍷ ∾(0‿1 ∧ 100≠⊢)⊸/¨nd
+⟨ 20 0 11 ⟩
+   ⍷ ∾(1‿1 ∧ 100≠⊢)⊸/¨nd
+⟨ 11 20 0 2 ⟩
+
+what's the purpose of taking out neighbors with m (for next c)?
+(seems like the ones that will be NOT be selected, are the one already with travelled smaller distance)
+removing the `m` causes infinite steps thru :)
+`c` cannot shrink.. so it IS to prevent backtravelling?
+(maybe after HALF mark at 91?)
+
+
+--dzaima sol
+⟨ 0 1 7 10 17 22 23 30 34 36 1 4 12 11 14 21 23 29 32 34 3 4 7 13 18 19 20 23 25 33 6 10 16 17 26 22 21 26 31 38 13 14 20 20 24 23 28 27 28 29 14 17 18 27 25 25 33 28 31 36 15 18 23 32 34 26 28 32 33 34 18 19 21 26 30 28 29 35 36 43 19 21 30 29 30 31 37 40 38 39 21 24 25 26 35 35 39 44 46 40 3820 ⟩
+
+
+--by my sol
+--accounting for all 4 dirs, its the same
+⟨ 0 1 7 10 17 22 23 30 34 36 1 4 12 11 14 21 23 29 32 34 3 4 7 13 18 19 20 23 25 33 6 10 16 17 26 22 21 26 31 38 13 14 20 20 24 23 28 27 28 29 14 17 18 27 25 25 33 28 31 36 15 18 23 32 34 26 28 32 33 34 18 19 21 26 30 28 29 35 36 43 19 21 30 29 30 31 37 40 38 39 21 24 25 26 35 35 39 44 46 40 ⟩
+
+
+
+
+

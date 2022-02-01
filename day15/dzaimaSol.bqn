@@ -42,6 +42,7 @@ Step•_while_(×≠) c
 #•Show ¯2⊑sc
 
 
+
 #### notes on dirs ####
 #  using example input
 #  w‿w⥊↕≠ll -> giving a 0 to 99 10x10 array

@@ -4,49 +4,68 @@ hexV ← "0000"‿"0001"‿"0010"‿"0011"‿"0100"‿"0101"‿"0110"‿"0111"�
 
 ##
 in ← ∾hexV⊏˜hexK⊸(⊑∘⊐)¨⊑•FLines "input"
-#in ← ∾hexV⊏˜hexK⊸(⊑∘⊐)¨"C200B40A82"
+#•Show in ← ∾hexV⊏˜hexK⊸(⊑∘⊐)¨"9C0141080250320F1802104A08"
+
 litVals ← ⟨⟩
 fOrVals ← ⟨⟩
 
 Bin2Int ← +´(2⊸⋆↕∘≠)×(⌽-⟜'0')
 Match ← {𝕏𝕨}´
 DoWhile ← {𝕨{𝕊⍟𝔽𝔾𝕩}𝕩@}´
-T ← ↑⋈↓
 
 #first, take 3, add version, check type id
 #if its literal value, take next 5, if start is 1 (continue)
+
+SClass ← {𝕊s:
+  p ⇐ s  # store a global copy of the input 
+  i ⇐ 0 # current cursor
+  T ← ↑⋈↓
+  Take ⇐ {n‿r←𝕩 T p⋄p↩r⋄i+↩𝕩⋄n}  # update the input whenever something taken 
+}
+
+sin ← SClass in
+
 accumVer←0
-Step ← {𝕊:
-  header‿packets ← 6 T in
-  version‿typeid ← 3 T header
+Step ← {𝕊p:
+  version ← p.Take 3
+  typeid ← p.Take 3
   accumVer +↩ Bin2Int version
+
+  •Show "type"
+  •Show typeid
 
   Match typeid‿{
     "100": 
-        c‿d‿p‿n‿v←@‿@‿packets‿@‿⟨⟩
+        c‿v←@‿⟨⟩
         DoWhile {𝕤⋄c≡"1"}‿{𝕤⋄
-          n‿p↩5 T p
-          c‿d↩1 T n
-          v∾↩d
+          c↩p.Take 1
+          v∾↩p.Take 4
         }
-        fOrVals ∾↩ 0
-        litVals ∾↩ Bin2Int v
-        packets ↩ p
+        Bin2Int v
         ;
     𝕩: 
-      noSub‿totalLen←0‿0
-      lt‿p←1 T packets  
-      {lt≡"1"? noSub‿p↩11 T p;totalLen‿p↩15 T p}
-      fOrVals ∾↩ 1
-      litVals ∾↩ Bin2Int 𝕩
-      packets ↩ p
+      lt←p.Take 1
+      rs←{
+        lt≡"1"? 
+        noSub←Bin2Int p.Take 11
+        {𝕊:Step p}¨↕noSub
+        ;
+        lt≡"0"?
+        totalLen←Bin2Int p.Take 15
+        endCur←p.i + totalLen
+        ps←⟨⟩
+        {𝕊:ps∾↩<Step p}•_while_{𝕊:p.i<endCur} @
+        }
+      op←Bin2Int 𝕩
+      op◶+‿×‿⌊‿⌈‿!‿>‿<‿=´ rs
   }
-  in↩packets
 }
 
 # part 1
-Step •_while_ {𝕤⋄ 0≢+´'0'-˜𝕩} in
+#Step •_while_ {𝕤⋄ 0≢+´'0'-˜𝕩} in
+res←Step sin
 •Show accumVer
+•Show res
 
 #∾hexV⊏˜hexK⊸(⊑∘⊐)¨"C200B40A82"
 #∾hexV⊏˜hexK⊸(⊑∘⊐)¨"04005AC33890"
@@ -57,40 +76,5 @@ Step •_while_ {𝕤⋄ 0≢+´'0'-˜𝕩} in
 #∾hexV⊏˜hexK⊸(⊑∘⊐)¨"9C005AC2F8F0"
 #∾hexV⊏˜hexK⊸(⊑∘⊐)¨"9C0141080250320F1802104A08"
 
-# part 2
-Sum←+´
-Prod←×´
-Min←⌊´
-Max←⌈´
-GT←>´
-LT←<´
-EQ←=´
-
-func←Sum‿Prod‿Min‿Max‿@‿GT‿LT‿EQ
-
-litVals ⌽↩
-fOrVals ⌽↩
-•Show litVals
-•Show fOrVals
-
-gr←⟨⟩
-r←⟨⟩
-Step2 ← {𝕊:
-  l‿ln←1 T litVals
-  f‿fn←1 T fOrVals
-  {0≡⊑f?r↩l∾r; 
-    #if r is already empty, means must process gr and reset gr to that one result
-    {r≡⟨⟩?
-      gr↩⟨gr{𝕏𝕨}func⊑˜l⟩;
-       gr↩(r{𝕏𝕨}func⊑˜l)∾gr
-       r↩⟨⟩}
-  }
-  litVals↩ln
-  fOrVals↩fn
-}
-
-Step2 •_while_(0≢≠) litVals 
-•Show gr
-•Show r
-
 # 32073632278762 - too high
+# 1675198555015 - answer

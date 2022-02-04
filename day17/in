@@ -1,0 +1,64 @@
+
+⟨ ⟨ 6 0 ⟩ ⟨ 6 1 ⟩ ⟨ 6 2 ⟩ ⟨ 6 3 ⟩ ⟨ 6 4 ⟩ ⟨ 6 5 ⟩ ⟨ 6 6 ⟩ ⟨ 6 7 ⟩ ⟨ 6 8 ⟩ ⟨ 6 9 ⟩ ⟨ 7 ¯1 ⟩ ⟨ 7 0 ⟩ ⟨ 7 1 ⟩ ⟨ 7 2 ⟩ ⟨ 7 3 ⟩ ⟨ 7 4 ⟩ ⟨ 7 5 ⟩ ⟨ 7 6 ⟩ ⟨ 7 7 ⟩ ⟨ 7 8 ⟩ ⟨ 7 9 ⟩ ⟨ 8 ¯2 ⟩ ⟨ 8 ¯1 ⟩ ⟨ 8 0 ⟩ ⟨ 8 1 ⟩ ⟨ 9 ¯2 ⟩ ⟨ 9 ¯1 ⟩ ⟨ 9 0 ⟩ ⟨ 10 ¯2 ⟩ ⟨ 10 ¯1 ⟩ ⟨ 11 ¯4 ⟩ ⟨ 11 ¯3 ⟩ ⟨ 11 ¯2 ⟩ ⟨ 11 ¯1 ⟩ ⟨ 12 ¯4 ⟩ ⟨ 12 ¯3 ⟩ ⟨ 12 ¯2 ⟩ ⟨ 13 ¯4 ⟩ ⟨ 13 ¯3 ⟩ ⟨ 13 ¯2 ⟩ ⟨ 14 ¯4 ⟩ ⟨ 14 ¯3 ⟩ ⟨ 14 ¯2 ⟩ ⟨ 15 ¯4 ⟩ ⟨ 15 ¯3 ⟩ ⟨ 15 ¯2 ⟩ ⟨ 20 ¯10 ⟩ ⟨ 20 ¯9 ⟩ ⟨ 20 ¯8 ⟩ ⟨ 20 ¯7 ⟩ ⟨ 20 ¯6 ⟩ ⟨ 20 ¯5 ⟩ ⟨ 21 ¯10 ⟩ ⟨ 21 ¯9 ⟩ ⟨ 21 ¯8 ⟩ ⟨ 21 ¯7 ⟩ ⟨ 21 ¯6 ⟩ ⟨ 21 ¯5 ⟩ ⟨ 22 ¯10 ⟩ ⟨ 22 ¯9 ⟩ ⟨ 22 ¯8 ⟩ ⟨ 22 ¯7 ⟩ ⟨ 22 ¯6 ⟩ ⟨ 22 ¯5 ⟩ ⟨ 23 ¯10 ⟩ ⟨ 23 ¯9 ⟩ ⟨ 23 ¯8 ⟩ ⟨ 23 ¯7 ⟩ ⟨ 23 ¯6 ⟩ ⟨ 23 ¯5 ⟩ ⟨ 24 ¯10 ⟩ ⟨ 24 ¯9 ⟩ ⟨ 24 ¯8 ⟩ ⟨ 24 ¯7 ⟩ ⟨ 24 ¯6 ⟩ ⟨ 24 ¯5 ⟩ ⟨ 25 ¯10 ⟩ ⟨ 25 ¯9 ⟩ ⟨ 25 ¯8 ⟩ ⟨ 25 ¯7 ⟩ ⟨ 25 ¯6 ⟩ ⟨ 25 ¯5 ⟩ ⟨ 26 ¯10 ⟩ ⟨ 26 ¯9 ⟩ ⟨ 26 ¯8 ⟩ ⟨ 26 ¯7 ⟩ ⟨ 26 ¯6 ⟩ ⟨ 26 ¯5 ⟩ ⟨ 27 ¯10 ⟩ ⟨ 27 ¯9 ⟩ ⟨ 27 ¯8 ⟩ ⟨ 27 ¯7 ⟩ ⟨ 27 ¯6 ⟩ ⟨ 27 ¯5 ⟩ ⟨ 28 ¯10 ⟩ ⟨ 28 ¯9 ⟩ ⟨ 28 ¯8 ⟩ ⟨ 28 ¯7 ⟩ ⟨ 28 ¯6 ⟩ ⟨ 28 ¯5 ⟩ ⟨ 29 ¯10 ⟩ ⟨ 29 ¯9 ⟩ ⟨ 29 ¯8 ⟩ ⟨ 29 ¯7 ⟩ ⟨ 29 ¯6 ⟩ ⟨ 29 ¯5 ⟩ ⟨ 30 ¯10 ⟩ ⟨ 30 ¯9 ⟩ ⟨ 30 ¯8 ⟩ ⟨ 30 ¯7 ⟩ ⟨ 30 ¯6 ⟩ ⟨ 30 ¯5 ⟩ ⟩
+while_(≤⟜(⊑tax)) 1
+
+•Show "least X value"
+•Show cx
+
+Step1Y ← {
+  sy←𝕩
+  ps←⟨sy⟩
+  {𝕊:p←𝕩+sy-↩1 ⋄ ps∾↩<p ⋄ p}•_while_(≥⟜(⊑tay)) sy
+  •Show ps ¯1⊸↓↩
+  #return empty if its out of range
+  t←¯1⊑ps
+  {(t≤1⊑tay)∧(t≥⊑tay)?ps;⟨⟩}
+}
+
+# part 1
+# due to the highest reach should have the highest velocity and thus would
+# land the furthest towards the bottom line of the target
+# so try within ~70-73 and got the answer
+#•Show ⌈´Step1Y 72
+
+#answer: 2628
+
+Step1X ← {
+  sx←𝕩
+  ps←⟨sx⟩
+  {𝕊:p←𝕩+sx↩{sx≡0?0;sx-1} ⋄ ps∾↩<p ⋄ p}•_while_{(sx≢0)∧(1⊑tax)≥𝕩} sx
+  ps
+}
+
+#•SHow "Y Values"
+#•Show Step1Y 9 # = len 20
+#•Show Step1Y 8 # = len 18
+#•Show Step1Y 7 # = len 16
+#•Show Step1Y 6 # = len 14
+#•Show Step1Y 5 # = len 12
+#•Show Step1Y 4 # = len 10
+#•Show Step1Y 3 # = len 9
+#•Show Step1Y 2 # = len 7
+#•Show Step1Y 1 # = len 5 - 6
+#•Show Step1Y 0 # = len 4 - 5
+#•Show Step1Y ¯1 # = len 3 - 4
+#•Show Step1Y ¯2 # len 2 - 3
+#•Show Step1Y ¯3 # len 2
+#•Show Step1Y ¯4 # len 2
+#
+#•Show "X values"
+#•SHow Step1X 6  # ≥ b 20 at (len 5) - X 0 to 9  (special case)
+#•SHow Step1X 7 # ≥ at len 4 - X ¯1 to 9  (sc)
+#•SHow Step1X 8 # ≥ at len 3 but ≤ len 5 - X ¯2 to 1
+#•SHow Step1X 9 # at len 3 - 4 -> X ¯2 to 0
+#•Show Step1X 10 # at len 3 - X ¯2 to ¯1
+#•Show Step1X 11 # at len 2 - 3 -> X ¯4 to ¯1
+#•Show Step1X 12 # at len 2 -> X ¯4 to ¯2
+#•Show Step1X 13 # at len 2 -> X ¯4 to ¯2 
+#•Show Step1X 14 # same as above
+#•Show Step1X 15 # same as above
+
+•Show "how?"
+•Show Step1Y ¯44
+
+

@@ -10,7 +10,7 @@ StepX ← {
 }
 
 cx ← 0
-{𝕊: cx+↩1 ⋄ StepX cx} •_while_(≤⟜(⊑tax)) 1
+{𝕊: cx+↩1 ⋄ StepX cx} •_while_(<⟜(⊑tax)) 1
 
 •Show "least X value"
 •Show cx
@@ -40,59 +40,50 @@ Step1X ← {
   ps
 }
 
-#•SHow "Y Values"
-#•Show Step1Y 9 # = len 20
-#•Show Step1Y 8 # = len 18
-#•Show Step1Y 7 # = len 16
-#•Show Step1Y 6 # = len 14
-#•Show Step1Y 5 # = len 12
-#•Show Step1Y 4 # = len 10
-#•Show Step1Y 3 # = len 9
-#•Show Step1Y 2 # = len 7
-#•Show Step1Y 1 # = len 5 - 6
-#•Show Step1Y 0 # = len 4 - 5
-#•Show Step1Y ¯1 # = len 3 - 4
-#•Show Step1Y ¯2 # len 2 - 3
-#•Show Step1Y ¯3 # len 2
-#•Show Step1Y ¯4 # len 2
-#
-#•Show "X values"
-#•SHow Step1X 6  # ≥ b 20 at (len 5) - X 0 to 9  (special case)
-#•SHow Step1X 7 # ≥ at len 4 - X ¯1 to 9  (sc)
-#•SHow Step1X 8 # ≥ at len 3 but ≤ len 5 - X ¯2 to 1
-#•SHow Step1X 9 # at len 3 - 4 -> X ¯2 to 0
-#•Show Step1X 10 # at len 3 - X ¯2 to ¯1
-#•Show Step1X 11 # at len 2 - 3 -> X ¯4 to ¯1
-#•Show Step1X 12 # at len 2 -> X ¯4 to ¯2
-#•Show Step1X 13 # at len 2 -> X ¯4 to ¯2 
-#•Show Step1X 14 # same as above
-#•Show Step1X 15 # same as above
-
 •Show "how?"
 Range←{l‿h←𝕩⋄l+↕(0-l)+1+h}
 # first get all the Y value indices that are within the target range
-yVals←Range ¯36‿72
+yVals←Range ¯36‿72 # the range to examine is from (reverse) the MAX Y value able to satisfy the Y target range until about half of that value (in negative)
 yRanges←Step1Y¨yVals
-•Show yRIndices←{/(𝕩≥⊑tay)∧(𝕩≤1⊑tay)}¨yRanges
+yRIndices←{/(𝕩≥⊑tay)∧(𝕩≤1⊑tay)}¨yRanges
+
+largestYIndices←⌈´∾yRIndices
 
 # match those value indices to all X values
-xVals←Range 22‿140
+xVals←Range 22‿140  # the range to examine is from the least X value able to satify the X target range until HALF of the distance, since if its more than half, next step will go out of range
 xRanges←Step1X¨xVals
 
 # who has range until the edge?
 rS←{(𝕩≥⊑tax)∧(𝕩≤1⊑tax)}¨xRanges
 xUntilEdge←{∧´¯2‿¯1⊏𝕩}¨rS
-•Show xRIndices←/¨rS
+xRIndices←/¨rS
+# first few rows extend until the end
+# the LAST x indices need to match the largest indices of Y - which is 145
+# in this example
+# (until the end)
+uEI←{inx←⊑𝕩 ⋄ inx+↕(largestYIndices+1-inx)}¨xUntilEdge/xRIndices
+xRIndices↩uEI∾(¬xUntilEdge)/xRIndices
 
 r1←xRIndices (∨´∘∊)⌜ yRIndices
-lx‿ly←≢r1
 
-•Show outsideTargetCount←(+´+˝(¬xUntilEdge)/r1)++´ly-⊑∘/˘xUntilEdge/r1
-•Show insideTargetCount← (1+(1⊑tay)-⊑tay)×(1+(1⊑tax)-⊑tax)
-totalCount←outsideTargetCount+insideTargetCount
-
-# first guess: 1317 - wrong - too low
-# second guess: 1412 - wrong - too high?
+•Show outsideTargetCount←+´+˝r1
+•Show insideTargetCount←(1+(1⊑tay)-⊑tay)×(1+(1⊑tax)-⊑tax)
+•Show totalCount←outsideTargetCount+insideTargetCount
 
 # answer: 1334
+
+# check: function to step thru each initial velocities
+StepThru←{x‿y:
+  dx‿dy←x‿y
+  ps←⟨x‿y⟩
+  {𝕊: 
+    dx↩0⌈dx-1
+    dy-↩1
+    nv←dx‿dy+¯1⊑ps
+    ps∾↩<nv
+  } •_while_ {x‿y←¯1⊑𝕩 ⋄ ¬(x≥253)∧(y≤¯46)} ps
+  #
+  #{x‿y←¯1⊑𝕩 ⋄ (x≤280)∧(y≥¯73)} ps
+}
+
 

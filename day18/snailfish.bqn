@@ -1,12 +1,9 @@
 in ← •FLines "inputEx1"
 do ← •ReBQN {repl⇐"strict"}
 
-AddM ← +´{(+´{10⋆⌽↕≠𝕩}×(-⟜'0'))¨𝕩} 
-•Show AddM ⟨"23","45","3"⟩
+Tkr ← {1↑/"?[],"=𝕩}◶(⟨⟩⊸∾)‿"⟨"‿"⟩"‿","¨
+Tkr1 ← {1↑/"?⟨⟩,"=𝕩}◶(⟨⟩⊸∾)‿"⟨"‿"⟩"‿","¨
 
-#for single positive digit addition only
-AddS ← +○(-⟜'0')
-Addition ← {"["∾𝕨∾","∾𝕩∾"]"}
 IntToString ← {𝕊int:
   ret ← ⟨⟩
   {𝕊:
@@ -16,25 +13,25 @@ IntToString ← {𝕊int:
   }•_while_⊢ int>0
   ret
 }
+StringToInt ← +´{10⋆⌽↕≠𝕩}×(-⟜'0')
+Addition ← {"["∾𝕨∾","∾𝕩∾"]"}
+AddTkr ← {⟨"⟨"⟩∾𝕨∾⟨","⟩∾𝕩∾⟨"⟩"⟩}
 
-#TODO: Can only run one `Explode` step only
-#Need new struct ⟨"[","[".."15",.."13"..⟩ to replace `sum` for v←IntToString AddS´ ll⊏sum, so selector ll can still work 
-#AddS change to AddM
+AddM ← +´StringToInt¨
 
-Reduce ← {𝕊sum:
+Explode ← {𝕊sum:
   •Show "new iter"
-  bs←"[]"=˘≍˜sum
-  wcs←¬+˝bs∾','=sum
-  #need to cater for double digit (or triple?)
-  #ft←wcs×¬0∾⟨1,1⟩⍷wcs
-  •Show dnums←/wcs
+  
+  #non numbers selectors
+  bs←"⟨"‿"⟩"‿","≡¨˘sum∾≍˜sum
+  #numbers selector
+  ns←¬+˝bs
+
+  dnums←/ns
   #convert sum to BQN array format in string
-  arr←sum
-  •Show arr↩¯1⊏"⟨⟩"{ds←/𝕩⋄arr (𝕨⥊˜≠ds)⌾(ds⊸⊏)↩}˘bs
 
   #token sum-to group digits together in an array
-
-  barr←Do arr
+  barr←Do ∾sum
   •Show ≡barr 
 
   {(5≤≡barr)?
@@ -43,24 +40,21 @@ Reduce ← {𝕊sum:
     {s←2=≠𝕩⋄levels ∾↩ s}⚇¯4 barr
     leftmoind←⊑/levels
     #get left-most num index - get the pair indices
-    •Show "lp rp"
-    •SHow lp‿rp←leftmoind‿(1+leftmoind)⊏dnums
-    •Show leftmoind
+    lp‿rp←leftmoind‿(1+leftmoind)⊏dnums
+    leftmoind
 
     #two new left-right regular values
-    •Show nlp←{(0>leftmoind-1)?¯1;
+    nlp←{(0>leftmoind-1)?¯1;
       ll←(leftmoind-1)‿leftmoind ⊑¨ <dnums
-      •Show "left v"
-      •Show v←IntToString AddS´ ll⊏sum
+      v←IntToString AddM ll⊏sum
       #cannot split first
       #vr←{v>9?{a‿b←(+⟜(48+@) ⌊≍⌈)𝕩⋄"["∾a∾","∾b∾"]"}v÷2;⟨v+48+@⟩}
       (⊑ll)‿v
       }
 
-    •Show nrp←{((≠dnums)≤leftmoind+2)?¯1;
+    nrp←{((≠dnums)≤leftmoind+2)?¯1;
       ll←(leftmoind+2)‿(leftmoind+1) ⊑¨ <dnums
-      •Show "right v"
-      •Show v←IntToString AddS´ ll⊏sum
+      v←IntToString AddM ll⊏sum
       #vr←{v>9?{a‿b←(+⟜(48+@) ⌊≍⌈)𝕩⋄"["∾a∾","∾b∾"]"}v÷2;⟨v+48+@⟩}
       (⊑ll)‿v
       }
@@ -69,20 +63,40 @@ Reduce ← {𝕊sum:
     #with starting index + len
     #assume first len = 1 for left and right regular
     #assume first len = 5 for target pair
-    {nrp≢¯1?nr‿v←nrp⋄sum↩(nr↑sum)∾v∾(nr+1)↓sum;@}
-    sum↩((lp-1)↑sum)∾"0"∾(5+lp-1)↓sum
-    {nlp≢¯1?nl‿v←nlp⋄sum↩(nl↑sum)∾v∾(nl+1)↓sum;@}
+    {nrp≢¯1?nr‿v←nrp⋄sum↩(nr↑sum)∾⟨v⟩∾(nr+1)↓sum;@}
+    sum↩((lp-1)↑sum)∾⟨"0"⟩∾(5+lp-1)↓sum
+    {nlp≢¯1?nl‿v←nlp⋄sum↩(nl↑sum)∾⟨v⟩∾(nl+1)↓sum;@}
     1‿sum;
     0‿sum}
 }
 
 #a←"[3,[2,[1,[7,3]]]]" Addition "[6,[5,[4,[3,2]]]]"
-a←"[[[[4,3],4],4],[7,[[8,4],9]]]" Addition "[1,1]"
-#a←"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]" Addition "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]"
+#a←"[[[[4,3],4],4],[7,[[8,4],9]]]" AddTkr○Tkr "[1,1]"
+#a←"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]" AddTkr○Tkr "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]"
 #
-{𝕊:o‿b←Reduce a⋄a↩b⋄o}•_while_⊢ 1
+Step ← {𝕊a:
+  #explode
+  {𝕊:o‿b←Explode a⋄a↩b⋄o}•_while_⊢ 1
+  
+  •Show a
+#TODO: multiple splits maybe needed
+#so need stop condition for split
+  #split
+  •Show fpos←{⊑/2=≠¨𝕩}a
+  •Show t←StringToInt fpos⊑a
+  splitted←{a‿b←(+⟜(48+@) ⌊≍⌈)𝕩÷2⋄⟨"⟨"⟩∾⟨⟨a⟩⟩∾⟨","⟩∾⟨⟨b⟩⟩∾⟨"⟩"⟩}t
+  as←(fpos↑a)∾splitted∾(fpos+1)↓a
 
-•Show a
+  barr←Do ∾as
+  {5=≡barr? Step as; as}
+}
+
+a←"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]" AddTkr○Tkr "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]"
+Step a
+
+
+
+
 
 
 

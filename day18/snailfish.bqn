@@ -1,16 +1,16 @@
-in ← •FLines "inputEx1"
+in ← •FLines "input"
 do ← •ReBQN {repl⇐"strict"}
 
 Tkr ← {1↑/"?[],"=𝕩}◶(⟨⟩⊸∾)‿"⟨"‿"⟩"‿","¨
 Tkr1 ← {1↑/"?⟨⟩,"=𝕩}◶(⟨⟩⊸∾)‿"⟨"‿"⟩"‿","¨
 
-IntToString ⇐ {𝕊int:
+IntToString ← {𝕊int:
   ret ← ⟨⟩
   {𝕊:
     ret∾˜↩@+48+<10|int
     int↩⌊int÷10
     int>0
-  }•_while_⊢ int>0
+  }•_while_⊢ int≥0
   ret
 }
 StringToInt ← +´{10⋆⌽↕≠𝕩}×(-⟜'0')
@@ -41,15 +41,12 @@ Explode ← {𝕊sum:
     nlp←{(0>leftmoind-1)?¯1;
       ll←(leftmoind-1)‿leftmoind ⊑¨ <dnums
       v←IntToString AddM ll⊏sum
-      #cannot split first
-      #vr←{v>9?{a‿b←(+⟜(48+@) ⌊≍⌈)𝕩⋄"["∾a∾","∾b∾"]"}v÷2;⟨v+48+@⟩}
       (⊑ll)‿v
       }
 
     nrp←{((≠dnums)≤leftmoind+2)?¯1;
       ll←(leftmoind+2)‿(leftmoind+1) ⊑¨ <dnums
       v←IntToString AddM ll⊏sum
-      #vr←{v>9?{a‿b←(+⟜(48+@) ⌊≍⌈)𝕩⋄"["∾a∾","∾b∾"]"}v÷2;⟨v+48+@⟩}
       (⊑ll)‿v
       }
 
@@ -73,29 +70,33 @@ Split ← {𝕊in:
     (fpos↑in)∾splitted∾(fpos+1)↓in}
 }
 
-#a←"[3,[2,[1,[7,3]]]]" Addition "[6,[5,[4,[3,2]]]]"
-#a←"[[[[4,3],4],4],[7,[[8,4],9]]]" AddTkr○Tkr "[1,1]"
-#a←"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]" AddTkr○Tkr "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]"
-#
-Step ← {𝕊a:
-  {(5=≡Do ∾a)?
+Step ← {exb‿spb𝕊a:
+  {exb?
     #explode
     {𝕊:o‿b←Explode a⋄a↩b⋄o}•_while_⊢ 1⋄a
     ;
-    (×≠/2=≠¨a)?
+    spb?
       #split
       Split a;
       a}
 }
 
+Fc←{5≤≡Do∾𝕩}∾{×≠/2=≠¨𝕩}
+
+input ← Tkr¨in
+
 #step until 5>≡ and /2=≠¨ is ⟨⟩
-a←"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]" AddTkr○Tkr "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]"
-•Show Step⍟15 a
+Add1 ← {
+  a←𝕨 AddTkr 𝕩
+  sel←⟨⟩
+  {𝕊: a↩sel Step a}•_while_{sel↩Fc𝕩⋄∨´sel} a
+}
 
+•Show finArr⇐Do∾Add1˜´ ⌽input
 
-
-
-
+Mag⇐{2≡≠𝕩?a‿b←𝕩⋄(3×a)+(2×b);𝕩}
+# part 1 - answer 4176
+•Show Mag Mag¨ Mag⚇¯2 Mag⚇¯3 finArr
 
 
 

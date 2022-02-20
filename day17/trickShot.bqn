@@ -21,7 +21,7 @@ Step1Y ← {
   {𝕊:p←𝕩+sy-↩1 ⋄ ps∾↩<p ⋄ p}•_while_(≥⟜(⊑tay)) sy
   ps ¯1⊸↓↩
   #return empty if its out of range
-  t←¯1⊑ps
+  t←¯1⊑≢
   {(t≤1⊑tay)∧(t≥⊑tay)?ps;⟨⟩}
 }
 

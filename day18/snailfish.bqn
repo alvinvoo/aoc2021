@@ -92,11 +92,16 @@ Add1 ← {
   {𝕊: a↩sel Step a}•_while_{sel↩Fc𝕩⋄∨´sel} a
 }
 
-•Show finArr⇐Do∾Add1˜´ ⌽input
-
-Mag⇐{2≡≠𝕩?a‿b←𝕩⋄(3×a)+(2×b);𝕩}
 # part 1 - answer 4176
-•Show Mag Mag¨ Mag⚇¯2 Mag⚇¯3 finArr
+#•Show finArr⇐Do∾Add1˜´ ⌽input
+#
+Mag⇐{2≡≠𝕩?a‿b←𝕩⋄(3×a)+(2×b);𝕩}
+#•Show Mag Mag¨ Mag⚇¯2 Mag⚇¯3 finArr
 
+FMag ← {Mag Mag¨ Mag⚇¯2 Mag⚇¯3 𝕩}
+f←input {l𝕊r: {l≡r?0;FMag∘Do∾l Add1 r}}⌜ input
+•Show ⌈´⥊f
+# first guess 4709 - too high (need sum of two DIFFERENT numbers)
+# answer - 4633
 
 

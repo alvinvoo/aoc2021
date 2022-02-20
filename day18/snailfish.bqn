@@ -4,7 +4,7 @@ do ← •ReBQN {repl⇐"strict"}
 Tkr ← {1↑/"?[],"=𝕩}◶(⟨⟩⊸∾)‿"⟨"‿"⟩"‿","¨
 Tkr1 ← {1↑/"?⟨⟩,"=𝕩}◶(⟨⟩⊸∾)‿"⟨"‿"⟩"‿","¨
 
-IntToString ← {𝕊int:
+IntToString ⇐ {𝕊int:
   ret ← ⟨⟩
   {𝕊:
     ret∾˜↩@+48+<10|int
@@ -20,8 +20,6 @@ AddTkr ← {⟨"⟨"⟩∾𝕨∾⟨","⟩∾𝕩∾⟨"⟩"⟩}
 AddM ← +´StringToInt¨
 
 Explode ← {𝕊sum:
-  •Show "new iter"
-  
   #non numbers selectors
   bs←"⟨"‿"⟩"‿","≡¨˘sum∾≍˜sum
   #numbers selector
@@ -29,11 +27,7 @@ Explode ← {𝕊sum:
 
   dnums←/ns
   #convert sum to BQN array format in string
-
-  #token sum-to group digits together in an array
   barr←Do ∾sum
-  •Show ≡barr 
-
   {(5≤≡barr)?
     #get 4th level depth arrays selector
     levels←⟨⟩
@@ -70,29 +64,33 @@ Explode ← {𝕊sum:
     0‿sum}
 }
 
+Split ← {𝕊in:
+  s←/2=≠¨in
+  {s≡⟨⟩?in;
+    fpos←⊑s
+    t←StringToInt fpos⊑in
+    splitted←{a‿b←(IntToString¨ ⌊≍⌈)𝕩÷2⋄⟨"⟨"⟩∾⟨a⟩∾⟨","⟩∾⟨b⟩∾⟨"⟩"⟩}t
+    (fpos↑in)∾splitted∾(fpos+1)↓in}
+}
+
 #a←"[3,[2,[1,[7,3]]]]" Addition "[6,[5,[4,[3,2]]]]"
 #a←"[[[[4,3],4],4],[7,[[8,4],9]]]" AddTkr○Tkr "[1,1]"
 #a←"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]" AddTkr○Tkr "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]"
 #
 Step ← {𝕊a:
-  #explode
-  {𝕊:o‿b←Explode a⋄a↩b⋄o}•_while_⊢ 1
-  
-  •Show a
-#TODO: multiple splits maybe needed
-#so need stop condition for split
-  #split
-  •Show fpos←{⊑/2=≠¨𝕩}a
-  •Show t←StringToInt fpos⊑a
-  splitted←{a‿b←(+⟜(48+@) ⌊≍⌈)𝕩÷2⋄⟨"⟨"⟩∾⟨⟨a⟩⟩∾⟨","⟩∾⟨⟨b⟩⟩∾⟨"⟩"⟩}t
-  as←(fpos↑a)∾splitted∾(fpos+1)↓a
-
-  barr←Do ∾as
-  {5=≡barr? Step as; as}
+  {(5=≡Do ∾a)?
+    #explode
+    {𝕊:o‿b←Explode a⋄a↩b⋄o}•_while_⊢ 1⋄a
+    ;
+    (×≠/2=≠¨a)?
+      #split
+      Split a;
+      a}
 }
 
+#step until 5>≡ and /2=≠¨ is ⟨⟩
 a←"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]" AddTkr○Tkr "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]"
-Step a
+•Show Step⍟15 a
 
 
 
